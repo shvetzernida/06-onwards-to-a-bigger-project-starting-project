@@ -20,7 +20,7 @@ export async function getStaticProps(context) {
   const meetup = (await getMeetup(meetupId)) ?? {};
   meetup.id = meetup._id.toString();
   delete meetup._id;
-  return { props: { meetup }, revalidate: 30 };
+  return { props: { meetup }, revalidate: 10 };
 }
 
 export async function getStaticPaths() {
@@ -39,6 +39,6 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false,
+    fallback: 'blocking',
   };
 }
