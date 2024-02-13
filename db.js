@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_MAIN_TABLE}.0fuxa08.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -40,6 +40,31 @@ export async function getAllMeetups() {
     console.log("getAllMeetups:", error);
   } finally {
     // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+export async function getAllMeetupsId() {
+  try {
+    const meetupsCollection = await connectToMeetupsCollection();
+    const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
+    return meetups;
+  } catch (error) {
+    console.log("getAllMeetups:", error);
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+export async function getMeetup(id) {
+  try {
+    const meetupsCollection = await connectToMeetupsCollection();
+    const meetup = await meetupsCollection.findOne({ _id: new ObjectId(id) });
+    return meetup;
+  } catch (error) {
+    console.log(error);
+  } finally {
     await client.close();
   }
 }

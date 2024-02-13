@@ -17,5 +17,5 @@ export async function getStaticProps() {
     delete meetup._id;
     return meetup;
   });
-  return { props: { meetups }, revalidate: 10 };
+  return { props: { meetups }, revalidate: 60 };
 }

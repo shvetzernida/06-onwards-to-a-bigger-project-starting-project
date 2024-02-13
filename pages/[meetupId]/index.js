@@ -1,5 +1,5 @@
-import { DUMMY_MEETUPS } from '..';
-import MeetupDetails from '../../components/meetups/MeetupDetails';
+import MeetupDetails from "../../components/meetups/MeetupDetails";
+import { getAllMeetupsId, getMeetup } from "../../db";
 
 function MeetupDetailsPage({ meetup }) {
   return <MeetupDetails {...meetup} />;
@@ -8,12 +8,21 @@ export default MeetupDetailsPage;
 
 export async function getStaticProps(context) {
   const { meetupId } = context.params;
-  const meetup = DUMMY_MEETUPS.find((meetup) => meetup.id === meetupId);
-  return { props: { meetup: meetup } };
+  const meetup = await getMeetup(meetupId);
+  meetup.id = meetup._id.toString();
+  delete meetup._id;
+  return { props: { meetup }, revalidate: 30 };
 }
 
 export async function getStaticPaths() {
-  const paths = DUMMY_MEETUPS.map((meetup) => ({
+  const response = await getAllMeetupsId();
+  const meetups = response.map((meetup) => {
+    meetup.id = meetup._id.toString();
+    delete meetup._id;
+    return meetup;
+  });
+
+  const paths = meetups.map((meetup) => ({
     params: {
       meetupId: meetup.id,
     },

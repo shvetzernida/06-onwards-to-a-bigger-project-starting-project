@@ -6,6 +6,7 @@
     "dev": "next dev",
     "dev-fresh-start": "rm -rf .next && next dev",
     "build": "rm -rf .next && next build",
+    "reinstall": "rm -rf node_modules .next && npm i",
     "start": "next start"
   },
   "dependencies": {
