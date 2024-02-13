@@ -1,0 +1,17 @@
+.list {
+  width: 70dvw;
+  margin: 0 auto;
+  padding: 0;
+
+  list-style: none;
+}
+
+.list > li:first-of-type {
+  margin-top: 0;
+}
+
+@media (min-width: 1200px) {
+  .list {
+    width: 50dvw;
+  }
+}
