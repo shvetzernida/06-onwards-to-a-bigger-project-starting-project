@@ -10,16 +10,34 @@ const client = new MongoClient(uri, {
   },
 });
 
+async function connectToMeetupsCollection() {
+  // Connect the client to the server	(optional starting in v4.7)
+  await client.connect();
+  const db = client.db(process.env.MONGODB_MAIN_TABLE);
+  const meetupsCollection = db.collection("meetups");
+  return meetupsCollection;
+}
+
 export async function addMeetup(meetup) {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    const db = client.db(process.env.MONGODB_MAIN_TABLE);
-    const meetupsCollection = db.collection("meetups");
-    const result = await meetupsCollection.insertOne(meetup);
-    return result;
+    const meetupsCollection = await connectToMeetupsCollection();
+    const response = await meetupsCollection.insertOne(meetup);
+    return response;
   } catch (error) {
     console.log(error);
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+export async function getAllMeetups() {
+  try {
+    const meetupsCollection = await connectToMeetupsCollection();
+    const meetups = await meetupsCollection.find().toArray();
+    return meetups;
+  } catch (error) {
+    console.log("getAllMeetups:", error);
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
