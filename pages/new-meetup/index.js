@@ -1,21 +1,22 @@
-import { useRouter } from "next/router";
-import NewMeetupForm from "../../components/meetups/NewMeetupForm";
+import { useRouter } from 'next/router';
+import NewMeetupForm from '../../components/meetups/NewMeetupForm';
+import Head from 'next/head';
 
 function NewMeetupPage() {
   const router = useRouter();
 
   async function onAddMeetup(meetup) {
     try {
-      const response = await fetch("/api/new-meetup", {
-        method: "POST",
+      const response = await fetch('/api/new-meetup', {
+        method: 'POST',
         body: JSON.stringify(meetup),
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
       const responseData = await response.json();
-      console.log("onAddMeetup data:", responseData);
-      router.push("/");
+      console.log('onAddMeetup data:', responseData);
+      router.push('/');
     } catch (error) {
       console.log(error);
     }
@@ -23,7 +24,10 @@ function NewMeetupPage() {
 
   return (
     <>
-      <h1 style={{ textAlign: "center" }}>NewMeetupPage</h1>
+      <Head>
+        <title>Add new meetup</title>
+        <meta name='description' content='Add your event!' />
+      </Head>
       <NewMeetupForm onAddMeetup={onAddMeetup} />
     </>
   );
