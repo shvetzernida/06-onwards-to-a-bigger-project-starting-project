@@ -2,6 +2,12 @@
   text-align: center;
 }
 
-.details img {
+.image-container {
+  position: relative;
   width: 100%;
+  height: 350px;
+}
+
+.image {
+  object-fit: cover;
 }
